@@ -1,0 +1,421 @@
+{
+    "meta": {
+        "restRoot": "TA_trello_webhook", 
+        "displayName": "Trello Webhook", 
+        "apiVersion": "3.0.0", 
+        "version": "1.0.0", 
+        "name": "TA-trello-webhook"
+    }, 
+    "pages": {
+        "inputs": {
+            "title": "Inputs", 
+            "services": [
+                {
+                    "entity": [
+                        {
+                            "required": true, 
+                            "help": "Enter a unique name for the data input", 
+                            "field": "name", 
+                            "validators": [
+                                {
+                                    "pattern": "^[a-zA-Z]\\w*$", 
+                                    "type": "regex", 
+                                    "errorMsg": "Input Name must start with a letter and followed by alphabetic letters, digits or underscores."
+                                }, 
+                                {
+                                    "maxLength": 100, 
+                                    "minLength": 1, 
+                                    "type": "string", 
+                                    "errorMsg": "Length of input name should be between 1 and 100"
+                                }
+                            ], 
+                            "type": "text", 
+                            "label": "Name"
+                        }, 
+                        {
+                            "required": true, 
+                            "help": "Time interval of input in seconds.", 
+                            "field": "interval", 
+                            "validators": [
+                                {
+                                    "pattern": "^\\-[1-9]\\d*$|^\\d*$", 
+                                    "type": "regex", 
+                                    "errorMsg": "Interval must be an integer."
+                                }
+                            ], 
+                            "type": "text", 
+                            "label": "Interval"
+                        }, 
+                        {
+                            "defaultValue": "default", 
+                            "required": true, 
+                            "options": {
+                                "blackList": "^_.*$", 
+                                "createSearchChoice": true, 
+                                "endpointUrl": "data/indexes"
+                            }, 
+                            "field": "index", 
+                            "validators": [
+                                {
+                                    "maxLength": 80, 
+                                    "minLength": 1, 
+                                    "type": "string", 
+                                    "errorMsg": "Length of index name should be between 1 and 80."
+                                }
+                            ], 
+                            "type": "singleSelect", 
+                            "label": "Index"
+                        }, 
+                        {
+                            "required": false, 
+                            "help": "", 
+                            "field": "trello_team", 
+                            "validators": [
+                                {
+                                    "maxLength": 8192, 
+                                    "minLength": 0, 
+                                    "type": "string", 
+                                    "errorMsg": "Max length of text input is 8192"
+                                }
+                            ], 
+                            "type": "text", 
+                            "label": "Trello Team"
+                        }, 
+                        {
+                            "required": false, 
+                            "help": "", 
+                            "field": "trello_key", 
+                            "validators": [
+                                {
+                                    "maxLength": 8192, 
+                                    "minLength": 0, 
+                                    "type": "string", 
+                                    "errorMsg": "Max length of text input is 8192"
+                                }
+                            ], 
+                            "type": "text", 
+                            "label": "Trello_key"
+                        }, 
+                        {
+                            "required": false, 
+                            "encrypted": true, 
+                            "field": "trello_token", 
+                            "help": "", 
+                            "validators": [
+                                {
+                                    "maxLength": 8192, 
+                                    "minLength": 0, 
+                                    "type": "string", 
+                                    "errorMsg": "Max length of password is 8192"
+                                }
+                            ], 
+                            "type": "text", 
+                            "label": "Trello_token"
+                        }, 
+                        {
+                            "required": false, 
+                            "help": "", 
+                            "field": "callback_url", 
+                            "validators": [
+                                {
+                                    "maxLength": 8192, 
+                                    "minLength": 0, 
+                                    "type": "string", 
+                                    "errorMsg": "Max length of text input is 8192"
+                                }
+                            ], 
+                            "type": "text", 
+                            "label": "Callback URL"
+                        }
+                    ], 
+                    "title": "trello_team", 
+                    "name": "trello_team"
+                },
+                {
+                    "title": "Trello Webhook", 
+                    "entity": [
+                        {
+                            "label": "Name", 
+                            "validators": [
+                                {
+                                    "type": "regex", 
+                                    "errorMsg": "Input Name must start with a letter and followed by alphabetic letters, digits or underscores.", 
+                                    "pattern": "^[a-zA-Z]\\w*$"
+                                }, 
+                                {
+                                    "maxLength": 100, 
+                                    "type": "string", 
+                                    "errorMsg": "Length of input name should be between 1 and 100", 
+                                    "minLength": 1
+                                }
+                            ], 
+                            "required": true, 
+                            "type": "text", 
+                            "help": "Enter a unique name for the data input", 
+                            "field": "name"
+                        }, 
+                        {
+                            "label": "Interval", 
+                            "validators": [
+                                {
+                                    "type": "regex", 
+                                    "errorMsg": "Interval must be an integer.", 
+                                    "pattern": "^\\-[1-9]\\d*$|^\\d*$"
+                                }
+                            ], 
+                            "required": true, 
+                            "type": "text", 
+                            "help": "Time interval of input in seconds.", 
+                            "field": "interval"
+                        }, 
+                        {
+                            "label": "Index", 
+                            "validators": [
+                                {
+                                    "maxLength": 80, 
+                                    "type": "string", 
+                                    "errorMsg": "Length of index name should be between 1 and 80.", 
+                                    "minLength": 1
+                                }
+                            ], 
+                            "defaultValue": "default", 
+                            "required": true, 
+                            "type": "singleSelect", 
+                            "options": {
+                                "blackList": "^_.*$", 
+                                "endpointUrl": "data/indexes", 
+                                "createSearchChoice": true
+                            }, 
+                            "field": "index"
+                        }, 
+                        {
+                            "label": "Trello key", 
+                            "validators": [
+                                {
+                                    "maxLength": 8192, 
+                                    "type": "string", 
+                                    "errorMsg": "Max length of text input is 8192", 
+                                    "minLength": 0
+                                }
+                            ], 
+                            "required": true, 
+                            "type": "text", 
+                            "help": "Get your key here: https://trello.com/app-key",
+                            "field": "trello_key"
+                        }, 
+                        {
+                            "field": "trello_token", 
+                            "label": "Trello Token", 
+                            "validators": [
+                                {
+                                    "maxLength": 8192, 
+                                    "type": "string", 
+                                    "errorMsg": "Max length of password is 8192", 
+                                    "minLength": 0
+                                }
+                            ], 
+                            "required": true, 
+                            "type": "text", 
+                            "help": "Keep it secret. Keep it safe. Get your token here: https://trello.com/1/authorize?expiration=never&scope=read,write,account&response_type=token&name=Server%20Token&key=YOURKEY",
+                            "encrypted": true
+                        }, 
+                        {
+                            "label": "Callback URL", 
+                            "validators": [
+                                {
+                                    "maxLength": 8192, 
+                                    "type": "string", 
+                                    "errorMsg": "Max length of text input is 8192", 
+                                    "minLength": 0
+                                }
+                            ], 
+                            "defaultValue": "http://splunk.gettrunk.us:9001/trello", 
+                            "required": true, 
+                            "type": "text", 
+                            "help": "You must have already configured a callback listener at this address", 
+                            "field": "callback_url"
+                        }
+                    ], 
+                    "name": "trello_webhook"
+                }
+            ], 
+            "table": {
+                "actions": [
+                    "edit", 
+                    "enable", 
+                    "delete", 
+                    "clone"
+                ], 
+                "moreInfo": [
+                    {
+                        "label": "Name", 
+                        "field": "name"
+                    }, 
+                    {
+                        "label": "Interval", 
+                        "field": "interval"
+                    }, 
+                    {
+                        "label": "Index", 
+                        "field": "index"
+                    }, 
+                    {
+                        "label": "Status", 
+                        "field": "disabled"
+                    }, 
+                    {
+                        "label": "Trello key", 
+                        "field": "trello_key"
+                    }, 
+                    {
+                        "label": "Trello Token", 
+                        "field": "trello_token"
+                    }, 
+                    {
+                        "label": "Callback URL", 
+                        "field": "callback_url"
+                    }
+                ], 
+                "header": [
+                    {
+                        "label": "Name", 
+                        "field": "name"
+                    }, 
+                    {
+                        "label": "Interval", 
+                        "field": "interval"
+                    }, 
+                    {
+                        "label": "Index", 
+                        "field": "index"
+                    }, 
+                    {
+                        "label": "Status", 
+                        "field": "disabled"
+                    }
+                ]
+            }, 
+            "description": "Manage your data inputs"
+        }, 
+        "configuration": {
+            "title": "Configuration", 
+            "tabs": [
+                {
+                    "title": "Account", 
+                    "table": {
+                        "actions": [
+                            "edit", 
+                            "delete", 
+                            "clone"
+                        ], 
+                        "header": [
+                            {
+                                "label": "Account name", 
+                                "field": "name"
+                            }, 
+                            {
+                                "label": "Username", 
+                                "field": "username"
+                            }
+                        ]
+                    }, 
+                    "entity": [
+                        {
+                            "label": "Account name", 
+                            "validators": [
+                                {
+                                    "maxLength": 50, 
+                                    "type": "string", 
+                                    "errorMsg": "Length of Account name should be between 1 and 50", 
+                                    "minLength": 1
+                                }, 
+                                {
+                                    "type": "regex", 
+                                    "errorMsg": "Account name must start with a letter and followed by alphabetic letters, digits or underscores.", 
+                                    "pattern": "^[a-zA-Z]\\w*$"
+                                }
+                            ], 
+                            "required": true, 
+                            "type": "text", 
+                            "help": "Enter a unique name for this account.", 
+                            "field": "name"
+                        }, 
+                        {
+                            "options": {
+                                "placeholder": "Enter the username here"
+                            }, 
+                            "label": "Username", 
+                            "validators": [
+                                {
+                                    "maxLength": 200, 
+                                    "type": "string", 
+                                    "errorMsg": "Length of username should be between 1 and 200", 
+                                    "minLength": 1
+                                }
+                            ], 
+                            "required": true, 
+                            "type": "text", 
+                            "help": "Enter the username for this account.", 
+                            "field": "username"
+                        }, 
+                        {
+                            "field": "password", 
+                            "label": "Password", 
+                            "validators": [
+                                {
+                                    "maxLength": 8192, 
+                                    "type": "string", 
+                                    "errorMsg": "Length of password should be between 1 and 8192", 
+                                    "minLength": 1
+                                }
+                            ], 
+                            "required": true, 
+                            "type": "text", 
+                            "help": "Enter the password for this account.", 
+                            "encrypted": true
+                        }
+                    ], 
+                    "name": "account"
+                }, 
+                {
+                    "title": "Logging", 
+                    "entity": [
+                        {
+                            "defaultValue": "INFO", 
+                            "type": "singleSelect", 
+                            "options": {
+                                "disableSearch": true, 
+                                "autoCompleteFields": [
+                                    {
+                                        "value": "DEBUG", 
+                                        "label": "DEBUG"
+                                    }, 
+                                    {
+                                        "value": "INFO", 
+                                        "label": "INFO"
+                                    }, 
+                                    {
+                                        "value": "WARNING", 
+                                        "label": "WARNING"
+                                    }, 
+                                    {
+                                        "value": "ERROR", 
+                                        "label": "ERROR"
+                                    }, 
+                                    {
+                                        "value": "CRITICAL", 
+                                        "label": "CRITICAL"
+                                    }
+                                ]
+                            }, 
+                            "label": "Log level", 
+                            "field": "loglevel"
+                        }
+                    ], 
+                    "name": "logging"
+                }
+            ], 
+            "description": "Set up your add-on"
+        }
+    }
+}
